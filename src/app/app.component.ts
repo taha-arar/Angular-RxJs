@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Observable, from, fromEvent, of } from 'rxjs';
+import {map, filter} from 'rxjs/operators'
 
 @Component({
   selector: 'app-root',
@@ -27,13 +28,30 @@ export class AppComponent {
   array1 = [1, 2, 3, 4, 5, 6, 7];
   array2 = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
-   myObservable = of(this.array1, this.array2);  // it takes multiple and diffrent arrguments 
+   //myObservable = of(this.array1, this.array2);  // it takes multiple and diffrent arrguments 
 
-  //myObservable = from(this.array2);  //it takes only ine argument and it must be an iterable one like array , string  ...
+  myObservable = from(this.array1);  //it takes only ine argument and it must be an iterable one like array , string  ...
+
+  transformedObs = this.myObservable.pipe(map((value) => {
+     return value*5;
+  }));
+
+  secondeObs = this.myObservable.pipe(filter((value) => {
+    return value%2===0;
+  }));
+
+  lastObs = this.myObservable
+  .pipe(map((x)=>{
+       return x*50;
+  }))
+  .pipe(filter((x)=>{
+    return x >= 250;
+  }));
+
+
 
   @ViewChild('btn') button : ElementRef;
 
-  btnObs;
 
   //Subscribe to that observable
   getAsyncData(){
@@ -49,7 +67,7 @@ export class AppComponent {
 //   alert('All the data has been streamed..');
 // });
  
-this.myObservable.subscribe({
+this.lastObs.subscribe({
   next : (value : any) => {
     this.data.push(value);
   },
@@ -62,18 +80,18 @@ this.myObservable.subscribe({
 })
   }
 
-  btnClicked(){
-   this.btnObs =  fromEvent(this.button.nativeElement, 'click')
-   .subscribe({
-    next : (value : any)=>{
-      console.log(value);
-    }
-   });
-  }
+//   btnClicked(){
+//    this.btnObs =  fromEvent(this.button.nativeElement, 'click')
+//    .subscribe({
+//     next : (value : any)=>{
+//       console.log(value);
+//     }
+//    });
+//   }
 
-ngAfterViewInit(){
-  this.btnClicked();
-}
+// ngAfterViewInit(){
+//   this.btnClicked();
+// }
 
 
 
