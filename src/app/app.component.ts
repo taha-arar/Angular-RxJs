@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Observable, from, fromEvent, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +12,74 @@ export class AppComponent {
   data : any [] = [];
 
   //Create an observable (event emiter)
-  myObservable = new Observable((observer) =>{
-    observer.next([1, 2, 3, 4, 5, 6, 7]);
-  });
+  // myObservable = new Observable((observer) =>{
+  //   //observer.next([1, 2, 3, 4, 5, 6, 7]);
+  //   observer.next(1);
+  //   observer.next(2);
+  //   observer.next(3);
+  //  // observer.error(new Error('An error has been occured..'));
+  //  observer.complete();
+  
+
+
+  // });
+
+  array1 = [1, 2, 3, 4, 5, 6, 7];
+  array2 = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+   myObservable = of(this.array1, this.array2);  // it takes multiple and diffrent arrguments 
+
+  //myObservable = from(this.array2);  //it takes only ine argument and it must be an iterable one like array , string  ...
+
+  @ViewChild('btn') button : ElementRef;
+
+  btnObs;
 
   //Subscribe to that observable
   getAsyncData(){
-    //The observer (event listner)
-    this.myObservable.subscribe((value : any) =>{
-      this.data=value;
-    });
+//     //The observer (event listner)
+//     this.myObservable.subscribe((value : any) =>{ //handler
+//       //this.data=value;
+//       this.data.push(value);
+//     },
+//   (err) =>{
+//     alert(err.message);
+//   },
+// ()=>{
+//   alert('All the data has been streamed..');
+// });
+ 
+this.myObservable.subscribe({
+  next : (value : any) => {
+    this.data.push(value);
+  },
+  error(err){
+    alert(err.message);
+  },
+  complete(){
+    alert('All the data has been streamed..');
   }
+})
+  }
+
+  btnClicked(){
+   this.btnObs =  fromEvent(this.button.nativeElement, 'click')
+   .subscribe({
+    next : (value : any)=>{
+      console.log(value);
+    }
+   });
+  }
+
+ngAfterViewInit(){
+  this.btnClicked();
 }
+
+
+
+
+
+}
+
+
+
