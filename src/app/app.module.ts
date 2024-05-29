@@ -6,14 +6,16 @@ import { AppComponent } from './app.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { ShowTaskComponent } from './show-task/show-task.component';
 import { TaskService } from './Services/task.service';
-import {FormsModule} from '@angular/forms'
+import {FormsModule} from '@angular/forms';
+import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component'
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NewTaskComponent,
-    ShowTaskComponent
+    ShowTaskComponent,
+    UnsubscribeComponent
   ],
   imports: [
     BrowserModule,

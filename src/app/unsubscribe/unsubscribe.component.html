@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>Unsubscribing to an Observable</h1>
+    <div class="subscriber-box">
+      <h2>Subscriber 1</h2>
+      <div class="numbers">
+        <div *ngFor="let num of numbers" class="number">{{ num }}</div>
+      </div>
+      <div class="buttons">
+        <button (click)="subscribe()" class="btn subscribe">Subscribe</button>
+        <button (click)="unsubscribe()" class="btn unsubscribe">Unsubscribe</button>
+      </div>
+    </div>
+  </div>
+  
